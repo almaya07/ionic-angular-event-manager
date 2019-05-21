@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">event-manager</string>
+    <string name="title_activity_main">event-manager</string>
+    <string name="package_name">com.javebratt.eventManager</string>
+    <string name="fileprovider_authority">com.javebratt.eventManager.fileprovider</string>
+    <string name="custom_url_scheme">com.javebratt.eventManager</string>
+</resources>
