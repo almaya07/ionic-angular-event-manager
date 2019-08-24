@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 
+import * as firebase from 'firebase/app';
+import { environment } from 'src/environments/environment';
+
 const { SplashScreen, StatusBar } = Plugins;
 
 @Component({
@@ -13,6 +16,7 @@ export class AppComponent {
   }
 
   initializeApp() {
+    firebase.initializeApp(environment.firebase);
     SplashScreen.hide().catch(error => {
       console.error(error);
     });
