@@ -34,4 +34,10 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 
+# Removes Credentials File.
 credentials.ts
+
+# Removes automatically built platforms.
+ios/
+android/
+.gradle/
