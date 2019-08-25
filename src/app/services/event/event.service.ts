@@ -42,4 +42,27 @@ export class EventService {
       .collection(`userProfile/${user.uid}/eventList`);
     return this.eventListRef.doc(eventId).get();
   }
+
+  addGuest(
+    guestName: string,
+    eventId: string,
+    eventPrice: number
+  ): Promise<void> {
+    return this.eventListRef
+      .doc(eventId)
+      .collection('guestList')
+      .add({ guestName })
+      .then(newGuest => {
+        return firebase.firestore().runTransaction(transaction => {
+          return transaction
+            .get(this.eventListRef.doc(eventId))
+            .then(eventDoc => {
+              const newRevenue = eventDoc.data().revenue + eventPrice;
+              transaction.update(this.eventListRef.doc(eventId), {
+                revenue: newRevenue
+              });
+            });
+        });
+      });
+  }
 }
