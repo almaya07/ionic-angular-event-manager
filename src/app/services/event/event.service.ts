@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 import 'firebase/firestore';
+import { AuthService } from '../user/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
   public eventListRef: firebase.firestore.CollectionReference;
-  constructor() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.eventListRef = firebase
-          .firestore()
-          .collection(`/userProfile/${user.uid}/eventList`);
-      }
-    });
+  constructor(private authService: AuthService) {}
+
+  async getEventList(): Promise<firebase.firestore.QuerySnapshot> {
+    const user: firebase.User = await this.authService.getUser();
+    this.eventListRef = firebase
+      .firestore()
+      .collection(`userProfile/${user.uid}/eventList`);
+    return this.eventListRef.get();
   }
 
   createEvent(
@@ -31,10 +31,6 @@ export class EventService {
       cost: eventCost * 1,
       revenue: eventCost * -1
     });
-  }
-
-  getEventList(): firebase.firestore.CollectionReference {
-    return this.eventListRef;
   }
 
   getEventDetail(eventId: string): firebase.firestore.DocumentReference {
