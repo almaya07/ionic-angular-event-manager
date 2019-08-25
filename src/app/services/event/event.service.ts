@@ -33,7 +33,13 @@ export class EventService {
     });
   }
 
-  getEventDetail(eventId: string): firebase.firestore.DocumentReference {
-    return this.eventListRef.doc(eventId);
+  async getEventDetail(
+    eventId: string
+  ): Promise<firebase.firestore.DocumentSnapshot> {
+    const user: firebase.User = await this.authService.getUser();
+    this.eventListRef = firebase
+      .firestore()
+      .collection(`userProfile/${user.uid}/eventList`);
+    return this.eventListRef.doc(eventId).get();
   }
 }
