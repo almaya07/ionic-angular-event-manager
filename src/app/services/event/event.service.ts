@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/storage';
 import { AuthService } from '../user/auth.service';
 
 @Injectable({
@@ -46,7 +47,8 @@ export class EventService {
   addGuest(
     guestName: string,
     eventId: string,
-    eventPrice: number
+    eventPrice: number,
+    guestPicture: string = null
   ): Promise<void> {
     return this.eventListRef
       .doc(eventId)
@@ -61,6 +63,25 @@ export class EventService {
               transaction.update(this.eventListRef.doc(eventId), {
                 revenue: newRevenue
               });
+              if (guestPicture != null) {
+                const storageRef = firebase
+                  .storage()
+                  .ref(`/guestProfile/${newGuest.id}/profilePicture.png`);
+
+                return storageRef
+                  .putString(guestPicture, 'base64', {
+                    contentType: 'image/png'
+                  })
+                  .then(() => {
+                    return storageRef.getDownloadURL().then(downloadURL => {
+                      return this.eventListRef
+                        .doc(eventId)
+                        .collection('guestList')
+                        .doc(newGuest.id)
+                        .update({ profilePicture: downloadURL });
+                    });
+                  });
+              }
             });
         });
       });

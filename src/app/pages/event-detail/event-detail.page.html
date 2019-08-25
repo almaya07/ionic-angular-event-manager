@@ -24,10 +24,21 @@
   <ion-card class="add-guest-form">
     <ion-card-header> Add Guests </ion-card-header>
     <ion-card-content>
-      <ion-item>
-        <ion-label position="stacked">Name</ion-label>
-        <ion-input [(ngModel)]="guestName" type="text" placeholder="What's your guest's name?"></ion-input>
-      </ion-item>
+      <ion-row>
+        <ion-col size="8">
+          <ion-item>
+            <ion-label position="stacked">Name</ion-label>
+            <ion-input [(ngModel)]="guestName" type="text" placeholder="What's your guest's name?"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-button (click)="takePicture()">
+            <ion-icon slot="icon-only" name="camera"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <span *ngIf="guestPicture">Picture taken!</span>
 
       <ion-button color="primary" expand="block" (click)="addGuest(guestName)" [disabled]="!guestName">
         Add Guest
