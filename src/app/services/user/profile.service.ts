@@ -12,19 +12,19 @@ export class ProfileService {
   public currentUser: firebase.User;
   constructor(private authService: AuthService) {}
 
-  async getUserProfile(): Promise<firebase.firestore.DocumentReference> {
+  async getUserProfile(): Promise<firebase.firestore.DocumentSnapshot> {
     const user: firebase.User = await this.authService.getUser();
     this.currentUser = user;
     this.userProfile = firebase.firestore().doc(`userProfile/${user.uid}`);
-    return this.userProfile;
+    return this.userProfile.get();
   }
 
   updateName(firstName: string, lastName: string): Promise<void> {
-    return this.userProfile.update({ firstName, lastName });
+    return this.userProfile.set({ firstName, lastName }, { merge: true });
   }
 
   updateDOB(birthDate: string): Promise<any> {
-    return this.userProfile.update({ birthDate });
+    return this.userProfile.set({ birthDate }, { merge: true });
   }
 
   async updateEmail(newEmail: string, password: string): Promise<void> {
@@ -36,7 +36,7 @@ export class ProfileService {
 
       await this.currentUser.reauthenticateWithCredential(credential);
       await this.currentUser.updateEmail(newEmail);
-      return this.userProfile.update({ email: newEmail });
+      return this.userProfile.set({ email: newEmail }, { merge: true });
     } catch (error) {
       console.error(error);
     }
