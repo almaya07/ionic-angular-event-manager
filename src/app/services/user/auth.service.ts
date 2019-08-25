@@ -9,6 +9,23 @@ import 'firebase/firestore';
 export class AuthService {
   constructor() {}
 
+  getUser(): Promise<firebase.User> {
+    return new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(
+        user => {
+          if (user) {
+            resolve(user);
+          } else {
+            reject(null);
+          }
+        },
+        error => {
+          reject(error);
+        }
+      );
+    });
+  }
+
   loginUser(
     email: string,
     password: string
