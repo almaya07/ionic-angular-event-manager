@@ -19,6 +19,11 @@ const routes: Routes = [
     path: 'reset-password',
     loadChildren:
       './pages/reset-password/reset-password.module#ResetPasswordPageModule'
+  },
+  {
+    path: 'profile',
+    loadChildren: './pages/profile/profile.module#ProfilePageModule',
+    canActivate: [AuthGuard]
   }
 ];
 
