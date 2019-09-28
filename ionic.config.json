@@ -1,7 +1,5 @@
 {
   "name": "event-manager",
-  "integrations": {
-    "capacitor": {}
-  },
+  "integrations": {},
   "type": "angular"
 }
