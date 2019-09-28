@@ -24,6 +24,23 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: './pages/profile/profile.module#ProfilePageModule',
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'event-create',
+    loadChildren:
+      './pages/event-create/event-create.module#EventCreatePageModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'event-detail/:id',
+    loadChildren:
+      './pages/event-detail/event-detail.module#EventDetailPageModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'event-list',
+    loadChildren: './pages/event-list/event-list.module#EventListPageModule',
+    canActivate: [AuthGuard]
   }
 ];
 
